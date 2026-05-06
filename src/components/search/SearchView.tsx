@@ -17,6 +17,7 @@ function YtIcon({ className }: { className?: string }) {
 import Image from "next/image";
 import { usePlayerStore } from "@/store/playerStore";
 import { cn } from "@/lib/utils";
+import { LikeButton } from "@/components/LikeButton";
 
 type YTTrack = {
   id: string;
@@ -187,11 +188,11 @@ export function SearchView() {
             {data.items.map((track, i) => {
               const active = isActive(track.id);
               return (
-                <button
+                <div
                   key={track.id}
                   onClick={() => handlePlay(track, data.items)}
                   className={cn(
-                    "group w-full px-4 py-3 text-left transition",
+                    "group w-full px-4 py-3 text-left transition cursor-pointer",
                     active ? "bg-red-500/10" : "hover:bg-white/5",
                     "focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500/50",
                   )}
@@ -259,9 +260,22 @@ export function SearchView() {
                       </div>
                     </div>
 
-                    {/* Duration */}
-                    <div className="w-10 shrink-0 text-right text-xs tabular-nums text-white/35">
-                      {formatMs(track.durationMs)}
+                    {/* Duration & Like */}
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 shrink-0 text-right text-xs tabular-nums text-white/35">
+                        {formatMs(track.durationMs)}
+                      </div>
+                      <LikeButton
+                        track={{
+                          id: `yt-${track.id}`,
+                          title: track.title,
+                          artist: track.artist,
+                          album: track.album,
+                          imageUrl: track.imageUrl,
+                          durationMs: track.durationMs,
+                          youtubeVideoId: track.youtubeVideoId,
+                        }}
+                      />
                     </div>
 
                     {/* Play btn */}
@@ -275,7 +289,7 @@ export function SearchView() {
                       <Play className="h-3.5 w-3.5 translate-x-px" />
                     </div>
                   </div>
-                </button>
+                </div>
               );
             })}
           </div>

@@ -17,6 +17,8 @@ export async function middleware(req: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
+  console.log(`[Middleware] Path: ${pathname}, User: ${user ? user.email : "none"}`);
+
   if (!user) {
     const url = req.nextUrl.clone();
     url.pathname = "/login";

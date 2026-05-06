@@ -40,12 +40,12 @@ export default function LandingPage() {
             >
               Log in
             </Link>
-            <Link
+            {/* <Link
               href="/app/home"
               className="rounded-full bg-primary px-4 py-2 text-sm font-semibold text-black hover:brightness-110 transition"
             >
               Open app
-            </Link>
+            </Link> */}
           </div>
         </div>
       </header>

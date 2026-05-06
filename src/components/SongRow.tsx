@@ -5,6 +5,7 @@ import { Play } from "lucide-react";
 import { useMutation } from "@tanstack/react-query";
 import { cn } from "@/lib/utils";
 import { usePlayerStore } from "@/store/playerStore";
+import { LikeButton } from "@/components/LikeButton";
 
 type SpotifyCompact = {
   id: string;
@@ -37,19 +38,22 @@ function formatMs(ms?: number) {
 
 export function SongRow({
   spotify,
+  isPrefixed,
   onMatchMissing,
 }: {
   spotify: SpotifyCompact;
+  isPrefixed?: boolean;
   onMatchMissing?: () => void;
 }) {
   const playTrack = usePlayerStore((s) => s.playTrack);
+  const prefix = isPrefixed ? "sp-" : "";
 
   const match = useMutation({
     mutationFn: () => matchToYouTube({ title: spotify.title, artist: spotify.artist }),
   });
 
   return (
-    <button
+    <div
       onClick={async () => {
         const res = await match.mutateAsync();
         if (!res?.youtubeVideoId) {
@@ -76,7 +80,7 @@ export function SongRow({
         });
       }}
       className={cn(
-        "w-full text-left px-4 py-3 transition hover:bg-white/5",
+        "w-full text-left px-4 py-3 transition hover:bg-white/5 cursor-pointer",
         "focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)]",
       )}
     >
@@ -105,11 +109,23 @@ export function SongRow({
         <div className="w-12 text-right text-xs tabular-nums text-white/45">
           {formatMs(spotify.durationMs)}
         </div>
-        <div className="ml-2 grid h-9 w-9 place-items-center rounded-full border border-white/10 bg-white/5 text-white/80 hover:bg-white/10 transition">
-          <Play className="h-4 w-4 translate-x-[1px]" />
+        <div className="flex items-center gap-2">
+          <LikeButton
+            track={{
+              id: isPrefixed ? spotify.id : `sp-${spotify.id}`,
+              title: spotify.title,
+              artist: spotify.artist,
+              album: spotify.album,
+              imageUrl: spotify.imageUrl,
+              durationMs: spotify.durationMs,
+            }}
+          />
+          <div className="grid h-9 w-9 place-items-center rounded-full border border-white/10 bg-white/5 text-white/80 hover:bg-white/10 transition">
+            <Play className="h-4 w-4 translate-x-[1px]" />
+          </div>
         </div>
       </div>
-    </button>
+    </div>
   );
 }
 

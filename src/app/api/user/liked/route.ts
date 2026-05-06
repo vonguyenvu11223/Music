@@ -53,11 +53,21 @@ export async function POST(req: Request) {
     youtube_video_id: body.youtubeVideoId ?? null,
   };
 
+  console.log("[liked/POST] Attempting upsert for user:", user.id, "track:", body.trackId);
+
   const { error } = await supabase
     .from("liked_songs")
     .upsert(row, { onConflict: "user_id,track_id" });
 
-  if (error) return NextResponse.json({ ok: false }, { status: 500 });
+  if (error) {
+    console.error("[liked/POST] Supabase Error:", {
+      message: error.message,
+      details: error.details,
+      hint: error.hint,
+      code: error.code
+    });
+    return NextResponse.json({ ok: false, error: error.message, details: error.details }, { status: 500 });
+  }
   return NextResponse.json({ ok: true });
 }
 
@@ -78,7 +88,10 @@ export async function DELETE(req: Request) {
     .eq("user_id", user.id)
     .eq("track_id", trackId);
 
-  if (error) return NextResponse.json({ ok: false }, { status: 500 });
+  if (error) {
+    console.error("[liked/DELETE] Supabase Error:", error.message);
+    return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
+  }
   return NextResponse.json({ ok: true });
 }
 

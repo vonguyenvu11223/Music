@@ -28,6 +28,9 @@ type PlayerState = {
   repeatMode: RepeatMode;
   shuffle: boolean;
 
+  likedSongs: Track[];
+  toggleLike: (track: Track) => void;
+  setLikedSongs: (songs: Track[]) => void;
   playTrack: (track: Track, opts?: { queue?: Track[]; index?: number }) => void;
   togglePlay: () => void;
   setPlaying: (value: boolean) => void;
@@ -51,6 +54,19 @@ export const usePlayerStore = create<PlayerState>()(
       progressMs: 0,
       repeatMode: "off",
       shuffle: false,
+      likedSongs: [],
+
+      setLikedSongs: (songs) => set({ likedSongs: songs }),
+
+      toggleLike: (track) => {
+        const { likedSongs } = get();
+        const isLiked = likedSongs.some((t) => t.id === track.id);
+        if (isLiked) {
+          set({ likedSongs: likedSongs.filter((t) => t.id !== track.id) });
+        } else {
+          set({ likedSongs: [track, ...likedSongs] });
+        }
+      },
 
       playTrack: (track, opts) => {
         const nextQueue = opts?.queue ?? get().queue;
@@ -138,6 +154,7 @@ export const usePlayerStore = create<PlayerState>()(
         volume: s.volume,
         repeatMode: s.repeatMode,
         shuffle: s.shuffle,
+        likedSongs: s.likedSongs,
       }),
     },
   ),

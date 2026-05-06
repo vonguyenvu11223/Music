@@ -15,6 +15,7 @@ import toast from "react-hot-toast";
 import { cn } from "@/lib/utils";
 import { useAudioPlayer } from "@/hooks/useAudioPlayer";
 import { usePlayerStore } from "@/store/playerStore";
+import { LikeButton } from "@/components/LikeButton";
 
 function formatMs(ms?: number) {
   if (!ms || ms < 0) return "0:00";
@@ -104,6 +105,9 @@ export function PlayerBar() {
               {currentTrack?.artist ?? "Pick something to play"}
             </div>
           </div>
+          {currentTrack && (
+            <LikeButton track={currentTrack} size="lg" className="ml-2" />
+          )}
           {!canPlay && currentTrack ? (
             <span className="ml-2 hidden rounded-full border border-white/10 bg-white/5 px-2 py-1 text-[10px] text-white/60 sm:inline">
               No stream

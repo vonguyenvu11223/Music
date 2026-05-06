@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { usePlayerStore } from "@/store/playerStore";
 
-// ─── YouTube IFrame API types ────────────────────────────────────────────────
+// ─── YouTube IFrame API types ─────────────────
 declare global {
   interface Window {
     YT: {

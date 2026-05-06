@@ -2,14 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import {
-  Home,
-  Search,
-  Library,
-  User,
-  Music2,
-  ListMusic,
-} from "lucide-react";
+import { Home, Search, Library, User, Music2, ListMusic } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const nav = [
@@ -23,13 +16,13 @@ export function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="hidden lg:flex lg:flex-col lg:w-[280px] lg:shrink-0 lg:border-r lg:border-white/5 lg:bg-black/40 lg:backdrop-blur">
+    <aside className="hidden lg:flex lg:flex-col lg:w-70 lg:shrink-0 lg:border-r lg:border-white/5 lg:bg-black/40 lg:backdrop-blur">
       <div className="flex items-center gap-2 px-5 py-5">
-        <div className="h-9 w-9 rounded-xl bg-[var(--primary)]/15 ring-1 ring-[var(--ring)] grid place-items-center shadow-[var(--shadow-soft)]">
-          <Music2 className="h-4 w-4 text-[var(--primary)]" />
+        <div className="h-9 w-9 rounded-xl bg-(--primary)/15 ring-1 ring-(--ring) grid place-items-center shadow-(--shadow-soft)">
+          <Music2 className="h-4 w-4 text-primary" />
         </div>
         <div className="leading-tight">
-          <div className="text-sm font-semibold tracking-wide">VIBEFLOW</div>
+          <div className="text-sm font-semibold tracking-wide">NGUYENVU</div>
           <div className="text-[11px] text-white/50">Premium streaming</div>
         </div>
       </div>
@@ -54,7 +47,7 @@ export function Sidebar() {
               <Icon
                 className={cn(
                   "h-5 w-5",
-                  active ? "text-[var(--primary)]" : "text-white/60",
+                  active ? "text-primary" : "text-white/60",
                 )}
               />
               <span className="font-medium">{item.label}</span>
@@ -64,14 +57,14 @@ export function Sidebar() {
       </nav>
 
       <div className="mt-6 px-5">
-        <div className="rounded-2xl border border-white/10 bg-white/5 p-4 shadow-[var(--shadow-soft)]">
+        <div className="rounded-2xl border border-white/10 bg-white/5 p-4 shadow-(--shadow-soft)">
           <div className="flex items-center gap-2 text-xs font-semibold text-white/80">
-            <ListMusic className="h-4 w-4 text-[var(--primary)]" />
+            <ListMusic className="h-4 w-4 text-primary" />
             Queue & Shortcuts
           </div>
           <div className="mt-2 text-[11px] leading-5 text-white/55">
-            Space = play/pause. Use Search to find tracks and instantly start
-            playback when a Jamendo match exists.
+            Space = play/pause. Use Search to find and stream tracks directly
+            via YouTube.
           </div>
         </div>
       </div>
@@ -82,4 +75,3 @@ export function Sidebar() {
     </aside>
   );
 }
-

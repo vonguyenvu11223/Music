@@ -1,5 +1,20 @@
 import { NextResponse } from "next/server";
-import { matchSpotifyToJamendo, type JamendoTrack } from "@/lib/musicMatcher";
+
+const YT_SEARCH = "https://www.googleapis.com/youtube/v3/search";
+
+type YTSearchItem = {
+  id: { videoId: string };
+  snippet: {
+    title: string;
+    channelTitle: string;
+    thumbnails: { high?: { url: string }; medium?: { url: string }; default?: { url: string } };
+  };
+};
+
+type YTSearchResponse = {
+  items?: YTSearchItem[];
+  error?: { message: string; code: number };
+};
 
 export async function POST(req: Request) {
   try {
@@ -8,33 +23,37 @@ export async function POST(req: Request) {
     const artist = body.artist?.trim() ?? "";
     if (!title || !artist) return NextResponse.json(null);
 
-    const clientId = process.env.JAMENDO_CLIENT_ID;
-    if (!clientId) return NextResponse.json(null, { status: 500 });
+    const apiKey = process.env.YOUTUBE_API_KEY;
+    if (!apiKey) return NextResponse.json(null, { status: 500 });
 
-    const jamendoRes = await fetch(
-      "https://api.jamendo.com/v3.0/tracks?" +
-        new URLSearchParams({
-          client_id: clientId,
-          format: "json",
-          limit: "12",
-          namesearch: title,
-          artist_name: artist,
-          audioformat: "mp32",
-          include: "musicinfo",
-        }),
-      { cache: "no-store" },
-    );
-    if (!jamendoRes.ok) return NextResponse.json(null);
-    const json = (await jamendoRes.json()) as { results?: JamendoTrack[] };
-    const candidates: JamendoTrack[] = json.results ?? [];
+    const searchUrl = new URL(YT_SEARCH);
+    searchUrl.searchParams.set("part", "snippet");
+    searchUrl.searchParams.set("type", "video");
+    searchUrl.searchParams.set("videoCategoryId", "10"); // Music
+    searchUrl.searchParams.set("q", `${title} ${artist}`);
+    searchUrl.searchParams.set("maxResults", "5");
+    searchUrl.searchParams.set("key", apiKey);
 
-    const match = matchSpotifyToJamendo({ title, artist }, candidates);
-    if (!match) return NextResponse.json(null);
+    const ytRes = await fetch(searchUrl.toString(), { cache: "no-store" });
+    if (!ytRes.ok) return NextResponse.json(null);
+
+    const json = (await ytRes.json()) as YTSearchResponse;
+    if (json.error) return NextResponse.json(null, { status: 500 });
+
+    const first = json.items?.[0];
+    if (!first) return NextResponse.json(null);
+
+    const thumb =
+      first.snippet.thumbnails.high?.url ??
+      first.snippet.thumbnails.medium?.url ??
+      first.snippet.thumbnails.default?.url ??
+      "";
 
     return NextResponse.json({
-      jamendoId: match.id,
-      streamUrl: match.audio,
-      imageUrl: match.image,
+      youtubeVideoId: first.id.videoId,
+      imageUrl: thumb,
+      // Keep streamUrl as undefined – playback via YouTubePlayer component
+      streamUrl: undefined,
     });
   } catch {
     return NextResponse.json(null, { status: 500 });

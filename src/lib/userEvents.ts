@@ -15,7 +15,7 @@ export async function recordRecentlyPlayed(track: Track) {
         imageUrl: track.imageUrl,
         durationMs: track.durationMs,
         spotifyUri: track.spotifyUri,
-        jamendoStreamUrl: track.streamUrl,
+        youtubeVideoId: track.youtubeVideoId,
       }),
     });
   } catch {

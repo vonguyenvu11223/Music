@@ -15,7 +15,7 @@ type SpotifyCompact = {
   durationMs?: number;
 };
 
-async function matchToJamendo(input: { title: string; artist: string }) {
+async function matchToYouTube(input: { title: string; artist: string }) {
   const res = await fetch("/api/music/match", {
     method: "POST",
     headers: { "content-type": "application/json" },
@@ -23,7 +23,7 @@ async function matchToJamendo(input: { title: string; artist: string }) {
   });
   if (!res.ok) return null;
   return (await res.json()) as
-    | { streamUrl: string; imageUrl?: string; jamendoId: string }
+    | { youtubeVideoId: string; imageUrl?: string }
     | null;
 }
 
@@ -37,23 +37,24 @@ function formatMs(ms?: number) {
 
 export function SongRow({
   spotify,
-  onJamendoMissing,
+  onMatchMissing,
 }: {
   spotify: SpotifyCompact;
-  onJamendoMissing?: () => void;
+  onMatchMissing?: () => void;
 }) {
   const playTrack = usePlayerStore((s) => s.playTrack);
 
   const match = useMutation({
-    mutationFn: () => matchToJamendo({ title: spotify.title, artist: spotify.artist }),
+    mutationFn: () => matchToYouTube({ title: spotify.title, artist: spotify.artist }),
   });
 
   return (
     <button
       onClick={async () => {
         const res = await match.mutateAsync();
-        if (!res?.streamUrl) {
-          onJamendoMissing?.();
+        if (!res?.youtubeVideoId) {
+          onMatchMissing?.();
+          // Still play via YouTube search in SearchView
           playTrack({
             id: `sp-${spotify.id}`,
             title: spotify.title,
@@ -71,7 +72,7 @@ export function SongRow({
           album: spotify.album,
           imageUrl: res.imageUrl ?? spotify.imageUrl,
           durationMs: spotify.durationMs,
-          streamUrl: res.streamUrl,
+          youtubeVideoId: res.youtubeVideoId,
         });
       }}
       className={cn(

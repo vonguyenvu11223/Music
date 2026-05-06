@@ -2,10 +2,13 @@ import type { ReactNode } from "react";
 import { Sidebar } from "@/components/Sidebar";
 import { Topbar } from "@/components/Topbar";
 import { PlayerBar } from "@/components/PlayerBar";
+import { YouTubePlayer } from "@/components/YouTubePlayer";
 
 export default function AppLayout({ children }: { children: ReactNode }) {
   return (
     <div className="min-h-[100dvh] bg-[var(--background)] text-[var(--foreground)]">
+      {/* Hidden YouTube IFrame Player — must stay mounted at app level */}
+      <YouTubePlayer />
       <div className="mx-auto flex min-h-[100dvh] max-w-[1400px]">
         <Sidebar />
         <div className="flex min-w-0 flex-1 flex-col">
@@ -19,4 +22,5 @@ export default function AppLayout({ children }: { children: ReactNode }) {
     </div>
   );
 }
+
 

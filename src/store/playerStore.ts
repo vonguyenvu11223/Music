@@ -13,7 +13,8 @@ export type Track = {
   album?: string;
   imageUrl?: string;
   durationMs?: number;
-  streamUrl?: string; // Jamendo URL (playable)
+  streamUrl?: string;      // legacy mp3 stream (unused after YouTube migration)
+  youtubeVideoId?: string; // YouTube video ID
   spotifyUri?: string;
 };
 

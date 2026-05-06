@@ -20,7 +20,7 @@ export default function AppHomePage() {
               Let’s find your next vibe.
             </div>
             <div className="mt-2 text-sm text-white/60">
-              Search with Spotify metadata, play with Jamendo streams.
+              Search with Spotify metadata, stream full songs via YouTube.
             </div>
           </div>
           <div className="flex gap-2">

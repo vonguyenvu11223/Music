@@ -8,9 +8,8 @@ export const metadata = {
 
 export default function LoginPage() {
   return (
-    <Suspense fallback={<div className="min-h-[100dvh] bg-black" />}>
+    <Suspense fallback={<div className="min-h-dvh bg-black" />}>
       <LoginView />
     </Suspense>
   );
 }
-

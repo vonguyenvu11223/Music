@@ -56,7 +56,7 @@ export function PlayerBar() {
       e.preventDefault();
       if (!currentTrack) return;
       if (!canPlay) {
-        toast.error("This track has no playable stream (Jamendo match missing).");
+        toast.error("This track has no playable stream (no YouTube match).");
         return;
       }
       togglePlay();
@@ -136,7 +136,7 @@ export function PlayerBar() {
                 if (!currentTrack) return;
                 if (!canPlay) {
                   toast.error(
-                    "No playable stream for this track (Jamendo match missing).",
+                    "No playable stream for this track (no YouTube match).",
                   );
                   return;
                 }

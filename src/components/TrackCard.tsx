@@ -21,7 +21,7 @@ export function TrackCard({
     <button
       onClick={() => {
         if (!track.streamUrl) {
-          toast(hint ?? "No playable stream yet. Search to match on Jamendo.");
+          toast(hint ?? "No playable stream yet. Search on YouTube to play.");
         }
         playTrack(track, { queue: [track], index: 0 });
       }}

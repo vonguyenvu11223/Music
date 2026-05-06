@@ -6,13 +6,11 @@ export const metadata = {
 export default function ProfilePage() {
   return (
     <div className="grid grid-cols-1 gap-4 lg:grid-cols-[1fr_420px]">
-      <div className="rounded-2xl border border-white/10 bg-white/5 p-6 shadow-[var(--shadow-soft)]">
+      <div className="rounded-2xl border border-white/10 bg-white/5 p-6 shadow-(--shadow-soft)">
         <div className="text-lg font-semibold text-white">Profile</div>
-        <div className="mt-2 text-sm text-white/60">
-          Next: show your Supabase profile row (avatar, stats, settings).
-        </div>
+        <div className="mt-2 text-sm text-white/60"></div>
       </div>
-      <div className="rounded-2xl border border-white/10 bg-white/5 p-6 shadow-[var(--shadow-soft)]">
+      <div className="rounded-2xl border border-white/10 bg-white/5 p-6 shadow-(--shadow-soft)">
         <div className="text-sm font-semibold text-white/85">Settings</div>
         <div className="mt-2 text-sm text-white/60">
           Theme is currently dark-luxury by default.
@@ -26,4 +24,3 @@ export default function ProfilePage() {
     </div>
   );
 }
-

@@ -9,7 +9,7 @@ type TrackPayload = {
   imageUrl?: string;
   durationMs?: number;
   spotifyUri?: string;
-  jamendoStreamUrl?: string;
+  youtubeVideoId?: string;
 };
 
 export async function GET() {
@@ -50,7 +50,7 @@ export async function POST(req: Request) {
     image_url: body.imageUrl ?? null,
     duration_ms: body.durationMs ?? null,
     spotify_uri: body.spotifyUri ?? null,
-    jamendo_stream_url: body.jamendoStreamUrl ?? null,
+    youtube_video_id: body.youtubeVideoId ?? null,
     last_played_at: new Date().toISOString(),
   };
 

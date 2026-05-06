@@ -1,4 +1,4 @@
-export type JamendoTrack = {
+export type YouTubeTrack = {
   id: string;
   name: string;
   artist_name: string;
@@ -26,11 +26,11 @@ function similarity(a: string, b: string) {
   return inter / Math.max(A.size, B.size);
 }
 
-export function matchSpotifyToJamendo(
+export function matchSpotifyToYouTube(
   input: { title: string; artist: string },
-  candidates: JamendoTrack[],
+  candidates: YouTubeTrack[],
 ) {
-  let best: { score: number; item: JamendoTrack } | null = null;
+  let best: { score: number; item: YouTubeTrack } | null = null;
 
   for (const c of candidates) {
     const titleScore = similarity(input.title, c.name);
@@ -43,4 +43,3 @@ export function matchSpotifyToJamendo(
   if (!best || best.score < 0.72) return null;
   return best.item;
 }
-
